@@ -65,6 +65,7 @@ export class CircleSlider extends React.Component<IProps, IState> {
     private circleSliderHelper: CircleSliderHelper;
     private mouseHelper!: MouseHelper;
     private svg: any;
+    private focus:boolean;
 
     constructor(props: IProps) {
         super(props);
@@ -189,7 +190,10 @@ export class CircleSlider extends React.Component<IProps, IState> {
     };
 
     public handleMouseDown = (event: React.MouseEvent<SVGSVGElement>): void => {
+        this.svg.current?.focus();
+        this.svg?.focus();
         if (!this.props.disabled) {
+            this.focus = true;
             event.preventDefault();
             window.addEventListener("mousemove", this.handleMouseMove);
             window.addEventListener("mouseup", this.handleMouseUp);
@@ -244,6 +248,7 @@ export class CircleSlider extends React.Component<IProps, IState> {
         return (
             <svg
                 ref={svg => (this.svg = svg)}
+                tabIndex={0}
                 width={`${size}px`}
                 height={`${size}px`}
                 viewBox={`0 0 ${size} ${size}`}
