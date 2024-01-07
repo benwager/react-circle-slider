@@ -68,6 +68,18 @@ export class CircleSliderHelper {
         return false;
     };
 
+    public increaseStepIndex(): void {
+        if (this.stepIndex < this.countSteps) {
+            this.stepIndex++;
+        }
+    }
+
+    public decreaseStepIndex(): void {
+        if (this.stepIndex > 0) {
+            this.stepIndex--;
+        }
+    }
+
     public getAnglePoint(): number {
         return (Math.PI * 2) / this.countSteps;
     }

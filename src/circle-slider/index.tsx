@@ -95,6 +95,8 @@ export class CircleSlider extends React.Component<IProps, IState> {
             this.stepsArray,
             value,
         );
+        
+        this.keyPress = this.keyPress.bind(this);
     }
 
     public componentDidMount() {
@@ -102,14 +104,39 @@ export class CircleSlider extends React.Component<IProps, IState> {
         this.setState({
             angle: this.circleSliderHelper.getAngle(),
             currentStepValue: this.circleSliderHelper.getCurrentStep(),
-        });
+        });        
     }
 
-    public componentWillReceiveProps(nextProps: any) {
-        if (this.props.value !== nextProps.value && !this.state.isMouseMove) {
-            this.updateSliderFromProps(nextProps.value);
+    public componentDidUpdate(prevProps: IProps) {
+        if (this.props.value !== prevProps.value && !this.state.isMouseMove && prevProps.value && !this.focus) {
+            this.updateSliderFromProps(prevProps.value);
         }
     }
+
+    public componentWillUnmount() {
+        window.removeEventListener("mousemove", this.handleMouseMove);
+        window.removeEventListener("mouseup", this.handleMouseUp);
+        window.removeEventListener("touchmove", this.handleTouchMove);
+        window.removeEventListener("touchend", this.handleTouchUp);
+        window.removeEventListener("keydown", this.keyPress, false);
+    }
+
+    public keyPress = (event: KeyboardEvent): void => {
+        if(this.props.disabled) return;
+        if (event.key === "ArrowRight") {
+            this.increaseCurrentStepByOne();
+        }
+        if (event.key === "ArrowLeft") {
+            this.decreaseCurrentStepByOne();
+        }
+        if (event.key === "ArrowUp") {
+            this.increaseCurrentStepByOne();
+        }
+        if (event.key === "ArrowDown") {
+            this.decreaseCurrentStepByOne();
+        }
+    };
+
 
     public updateAngle = (angle: number): void => {
         this.circleSliderHelper.updateStepIndexFromAngle(angle);
@@ -126,6 +153,28 @@ export class CircleSlider extends React.Component<IProps, IState> {
         if (Math.abs(angle - this.state.angle) < Math.PI) {
             this.updateAngle(angle);
         }
+    };
+
+    public increaseCurrentStepByOne = (): void => {
+        this.circleSliderHelper.increaseStepIndex();
+        const currentStep = this.circleSliderHelper.getCurrentStep();
+
+        this.setState({
+            angle: this.circleSliderHelper.getAngle(),
+            currentStepValue: currentStep,
+        });
+       this.props.onChange(currentStep);
+    };
+
+    public decreaseCurrentStepByOne = (): void => {
+        this.circleSliderHelper.decreaseStepIndex();
+        const currentStep = this.circleSliderHelper.getCurrentStep();
+
+        this.setState({
+            angle: this.circleSliderHelper.getAngle(),
+            currentStepValue: currentStep,
+        });
+        this.props.onChange(currentStep);
     };
 
     public updateSliderFromProps = (valueFromProps: number): void => {
@@ -254,6 +303,11 @@ export class CircleSlider extends React.Component<IProps, IState> {
                 viewBox={`0 0 ${size} ${size}`}
                 onMouseDown={this.handleMouseDown}
                 onTouchStart={this.handleTouchStart}
+                onFocus={() => {this.focus = true;
+                    window.removeEventListener("keydown", this.keyPress, false);
+                    window.addEventListener("keydown", this.keyPress, false); }}
+                onBlur={() => {this.focus = false;
+                    window.removeEventListener("keydown", this.keyPress, false); }}
                 style={{
                     padding: offset,
                     boxSizing: "border-box",
