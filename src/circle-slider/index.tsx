@@ -88,7 +88,7 @@ export class CircleSlider extends React.Component<IProps, IState> {
         this.maxLineWidth = Math.max(circleWidth!, progressWidth!);
         this.radius =
             this.getCenter() - Math.max(this.maxLineWidth, knobRadius! * 2) / 2;
-        this.countSteps = 1 + (max! - min!) / stepSize!;
+        this.countSteps = 1 + Math.abs((max! - min!) / stepSize!);
         this.stepsArray = this.getStepsArray(min!, stepSize!);
 
         this.circleSliderHelper = new CircleSliderHelper(
@@ -205,9 +205,9 @@ export class CircleSlider extends React.Component<IProps, IState> {
     };
 
     public getStepsArray = (min: number, stepSize: number): number[] => {
-        const stepArray = [];
-        for (let i = 0; i < this.countSteps; i++) {
-            stepArray.push(min + i * stepSize);
+        const stepArray:number[] = [];
+        for (let i:number = 0; i < this.countSteps; i++) {
+            stepArray.push(Number(min) + i * stepSize);
         }
         return stepArray;
     };
