@@ -65,7 +65,7 @@ export class CircleSlider extends React.Component<IProps, IState> {
     private circleSliderHelper: CircleSliderHelper;
     private mouseHelper!: MouseHelper;
     private svg: any;
-    private focus:boolean;
+    private focus:boolean = false;
 
     constructor(props: IProps) {
         super(props);
