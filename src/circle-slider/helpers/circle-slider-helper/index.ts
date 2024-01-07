@@ -47,6 +47,8 @@ export class CircleSliderHelper {
     }
 
     public updateStepIndexFromAngle(angle: number) {
+        if(angle < 0.02) angle = 0;
+        if(angle > (Math.PI * 2) - 0.01) angle = Math.PI * 2;
         const stepIndex = Math.round(angle / this.getAnglePoint());
         if (stepIndex < this.countSteps) {
             this.stepIndex = stepIndex;
