@@ -2,6 +2,16 @@
 
 Circle Slider Component for React.js
 
+Forked and added a few extra features
+
+## ⚡ Added in this fork
+
+-  Allow negative values 
+-  Snap to min / max results
+-  Accessibility - Focus and Tab indexing
+-  Accessibility - Up/Down Left/Right keyboard controls
+
+
 ![Imgur](https://i.imgur.com/4RdYfaL.gif)
 
 ## ⚡ Functionality
@@ -110,9 +120,9 @@ ReactDOM.render(<App />, document.getElementById("root"));
 
 ## 💡 Todo
 
-- [ ] Keyboard support
+- [ x ] Keyboard support (Added in this fork)
 - [ ] Mouse scroll support
-- [ ] Accessibility 
+- [ x ] Accessibility (Added in this fork)
 
 ## 💻 Contributing
 
